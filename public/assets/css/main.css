@@ -1,0 +1,14 @@
+pre.sf-dump {
+    z-index: 100 !important;
+}
+
+
+#mainMap {
+    width: 100%;
+    height: 400px;
+    background-color: grey;
+}
+
+#mapSpinnerDiv {
+    height: 50px;
+}

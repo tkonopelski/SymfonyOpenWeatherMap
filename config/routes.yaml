@@ -1,0 +1,7 @@
+index:
+    path: /
+    controller: App\Controller\HomeController::index
+
+#mapapi_getwheather:
+#    path: /mapapi/getwheather
+#    controller: App\Controller\MapApiController::getWheather

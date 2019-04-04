@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}History{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <h3>History</h3>
+
+                <table class="table table-striped table-bordered table-hover">
+
+                {% for data in pagination %}
+                    <tr>
+                        <td width="1%">
+                            {{ data.id }}
+                        </td>
+
+                        <td>
+                            {{ data.added|date("Y-m-d H:i") }}
+                        </td>
+
+                        <td>
+                            {{ data.longitude }} / {{ data.latitude }}
+                        </td>
+
+                        <td>
+                            {{ data.city }} ({{ data.country }})
+                        </td>
+
+                        <td>
+                            {{ data.temp }}
+                        </td>
+
+                        <td>
+                            {{ data.pressure }}
+                        </td>
+
+                        <td>
+                            {{ data.humidity }}
+                        </td>
+
+                        <td>
+                            {{ data.windspeed }}
+                        </td>
+
+                        <td>
+                            {{ data.clouds }}
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </table>
+
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}

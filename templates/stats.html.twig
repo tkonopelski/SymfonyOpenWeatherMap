@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Stats ({{ count }})</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {% for c, data in aggregated %}
+                {{ c }}:
+                {{ data|number_format(2) }}
+                <br>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-6">
+            <div class="badge badge-primary">Popular searches</div>
+            <br>
+            {% for c, data in groupCity %}
+                {{ data.city }}:
+                {{ data.c }}
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
