@@ -19,13 +19,13 @@ class StatsController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(WeatherHistory::class);
 
         $aggregated = $repository->getAggregated();
-        dump($aggregated);
+        //dump($aggregated);
 
         $count = $repository->getCount();
-        dump($count);
+        //dump($count);
 
         $groupCity = $repository->findByCityGroup();
-        dump($groupCity);
+        //dump($groupCity);
 
         return $this->render('stats.html.twig', [
             'title' => 'Stats',
