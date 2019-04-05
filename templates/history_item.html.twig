@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <h3>Item #{{ item.id }}</h3>
+
+                <table class="table table-striped table-bordered table-hover">
+                    <tr>
+                        <td width="10%">
+                           longitude/latitude
+                        </td>
+                        <td>
+                            {{ item.longitude }}/{{ item.latitude }}
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>
+                            added
+                        </td>
+                        <td>
+                            {{ item.added|date("Y-m-d H:i") }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            temp
+                        </td>
+                        <td>
+                            {{ item.temp }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            description
+                        </td>
+                        <td>
+                            {{ item.description }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            pressure
+                        </td>
+                        <td>
+                            {{ item.pressure }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            humidity
+                        </td>
+                        <td>
+                            {{ item.humidity }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            visibility
+                        </td>
+                        <td>
+                            {{ item.visibility }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            wind_speed
+                        </td>
+                        <td>
+                            {{ item.windSpeed }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            place
+                        </td>
+                        <td>
+                            {{ item.city }}
+                            {{ item.country }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            ip
+                        </td>
+                        <td>
+                            {{ item.ip }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            ua
+                        </td>
+                        <td>
+                            {{ item.ua }}
+                        </td>
+                    </tr>
+
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

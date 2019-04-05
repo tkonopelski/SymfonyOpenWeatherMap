@@ -24,4 +24,18 @@ class HistoryController extends AbstractController
                 $repository->findBy(array(), array('id'=>'desc')),$request->query->getInt('page', 1),$this->queryLimit)
         ]);
     }
+
+    /**
+     * @Route("/history/item/{id}", name="history_item")
+     */
+    public function item($id = null)
+    {
+        $repository = $this->getDoctrine()->getRepository(WeatherHistory::class);
+        $item = $repository->findOneBy(array('id' => $id));
+
+        return $this->render('history_item.html.twig', [
+            'item' => $item,
+            'title' => 'Item #' . $item->getId()
+        ]);
+    }
 }
