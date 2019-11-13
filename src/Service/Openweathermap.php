@@ -19,7 +19,7 @@ class Openweathermap
 
     private $logger;
 
-    private $debug = false;
+    private $debug = true;
 
     public function __construct(ParameterBagInterface $params, LoggerInterface $logger)
     {
