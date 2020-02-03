@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\WeatherHistory;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HistoryController extends AbstractController
 {
@@ -21,7 +21,10 @@ class HistoryController extends AbstractController
 
         return $this->render('history.html.twig', [
             'pagination' => $paginator->paginate(
-                $repository->findBy(array(), array('id'=>'desc')),$request->query->getInt('page', 1),$this->queryLimit)
+                $repository->findBy([], ['id' => 'desc']),
+                $request->query->getInt('page', 1),
+                $this->queryLimit
+            ),
         ]);
     }
 
@@ -31,11 +34,11 @@ class HistoryController extends AbstractController
     public function item($id = null)
     {
         $repository = $this->getDoctrine()->getRepository(WeatherHistory::class);
-        $item = $repository->findOneBy(array('id' => $id));
+        $item = $repository->findOneBy(['id' => $id]);
 
         return $this->render('history_item.html.twig', [
             'item' => $item,
-            'title' => 'Item #' . $item->getId()
+            'title' => 'Item #'.$item->getId(),
         ]);
     }
 }
