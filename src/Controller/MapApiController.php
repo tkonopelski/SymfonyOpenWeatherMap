@@ -44,6 +44,25 @@ class MapApiController extends AbstractController
             return new JsonResponse($return);
         }
     }
+    /**
+     * @Route("/mapapi/forecastcity", name="mapapi_forecastcity")
+     */
+    public function getForecastByCity(Request $request, Openweathermap $openweathermap)
+    {
+        $city = $request->query->get('city');
+        //$city = $request->request->get('city', false);
+        $city = substr($city, 0, 25);
+        //echo $city;
+        
+        
+        //return new JsonResponse('');
+        //return new Response('');
+
+        $data = $openweathermap->getForecastByCity($city);
+        return new JsonResponse($data);
+        
+        
+    }
 
     /**
      * Save weather.

@@ -7,7 +7,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
 
         <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" >
-        <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" >
+        <link rel="stylesheet" href="{{ asset('assets/css/main.css?c=1') }}" >
 
         <link rel="stylesheet" href="{{ asset('assets/css/gmap.css') }}" >
 
@@ -25,38 +25,12 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top111 bg-dark">
-        <a class="navbar-brand" href="/">
-            Map!
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/history">History </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/stats">Stats</a>
-                </li>
-
-
-            </ul>
-
-
-            <form class="form-inline my-2 my-lg-0 d-none">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
+    
+    
+    
+     {% include 'navbar/navbar_02.html' %}
+    
+    
 
     <main role="main" id="mainMain">
 
@@ -75,7 +49,11 @@
 
     
     
+    <script src="{{ asset('assets/js/popper.min.js') }}" ></script>
     <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}" ></script>
+    <script src="{{ asset('assets/js/js.cookie.min.js') }}" ></script>
+    <script src="{{ asset('assets/js/moment-with-locales.js') }}" ></script>
+    
     <script src="{{ asset('assets/js/main.js') }}?cache={{ "now"|date("mdhms") }}" ></script>
 
     <script src="{{ asset('assets/js/chart.js') }}?cache={{ "now"|date("mdhms") }}" ></script>

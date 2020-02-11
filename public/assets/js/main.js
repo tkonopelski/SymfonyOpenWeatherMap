@@ -1,7 +1,9 @@
+var goldChart = [];
 jQuery(document).ready(function () {
 
     console.log('main');
-    $('#goldChartMain').goldChart();
+
+    //goldChart = $('#goldChartMain').goldChart();
 
 });
 
@@ -11,7 +13,8 @@ function initMap() {
 	
 	//return false;
 
-    var uluru = {lat: 50.34984208, lng: 18.89167786};
+	//var uluru = {lat: 50.34984208, lng: 18.89167786};
+    var uluru = {lat: 53.34984208, lng: 22.89167786};
     map = new google.maps.Map(document.getElementById('mainMap'), {zoom: 10, center: uluru});
     //var marker = new google.maps.Marker({position: uluru, map: map});
 

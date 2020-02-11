@@ -1,0 +1,228 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vue{% endblock %}
+
+{% block body %}
+
+<style>
+
+#chartMain {
+
+/*
+	max-height: 300px !important;
+*/
+}
+
+</style>
+
+
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+
+<div id="buildWeekInfo">
+
+</div>
+
+
+
+<div class="card mb-5 d-none">
+    <div class="card-body" style="height: 300px;">
+    
+        <canvas id="chartMain"></canvas>
+        
+        
+    </div>
+</div>
+
+<div style="height: 230px;" class="d-none">
+	<canvas id="charthumidityMain"></canvas>
+</div>
+
+        
+<div class="clearfix1" style="clear: both;"></div>
+
+
+
+{% verbatim %}
+
+<div id="weatherWueApp">
+
+
+<div id="appSpinnerId" v-if="appSpinner" class="d-flex justify-content-center">
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading... {{ appSpinner }}</span>
+  </div>
+</div>
+
+
+<div v-if="errorMsg" class="alert alert-danger" role="alert">
+  <div >{{ errorMsg }}</div>
+</div>
+
+<div v-if="citySearch" id="wwaCitySearch">{{ citySearch }}</div>
+
+
+<span v-if="isLocal==true">
+	LOCAL <button v-on:click="searchButton">searchButton</button>
+</span>
+
+
+<div class="dropdown show float-right1">
+  <a class="btn btn-info dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    History
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" v-if="citySearchHistory.length > 0" >
+    <a class="dropdown-item" href="#" v-for="searchHis in citySearchHistory" v-on:click="searchCity(searchHis.name)">{{ searchHis.name }}</a>
+  </div>
+</div>
+
+<div class="card mb-4" style="">
+  
+  <div class="card-body">
+    
+        <div class="row" v-for="cityIno in cityInfo">
+        
+            <div class="col-md-3">
+    
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Sunrise
+                <span class="badge badge-warning badge-pill">{{ cityIno.sunrise|formatDateHM }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                Sunset
+                <span class="badge badge-dark badge-pill">{{ cityIno.sunset|formatDateHM }}</span>
+              </li>              
+            </ul>
+
+            </div>
+            
+            <div class="col-md-6">
+           		 <h1 class="text-center">{{ cityIno.name }}, {{ cityIno.country }}</h1>
+            
+            </div>
+            
+            <div class="col-md-3">
+            
+                 <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Population
+                    <span class="badge badge-primary badge-pill">{{ cityIno.population }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Coordinates
+                    <span class="badge badge-light badge-pill">
+                    {{ cityIno.coord.lat }}/{{ cityIno.coord.lon }}
+                    </span>
+                  </li>
+                </ul>
+            </div>
+        
+        </div><!-- end loop --> 
+  </div>
+</div>
+
+
+
+
+<div id="buildWeekInfoVue">
+			
+	<div class="card-deck mb-3 text-center" >
+	
+		<div class="card mb-4 shadow-sm" v-for="forecastRes in forecastResult">
+			<div class="card-header">
+				<h4 class="my-0 font-weight-normal">
+				    {{ forecastRes.dt_txt|formatDateDayName }} 
+				</h4>
+				{{ forecastRes.dt_txt }} 
+			</div>
+			<div class="card-body">
+				<h1 class="card-title pricing-card-title">
+					{{ forecastRes.main.temp }}<small class="text-muted"><span class="symbol">°</span>C
+					</small>
+				</h1>
+				
+
+				
+				<div v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
+					<img :src="'http://openweathermap.org/img/wn/' + item.icon + '@2x.png'">
+				</div>
+				
+					
+				<div class="font-weight-bold" v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
+    				<p>
+    				{{ item.main }}
+    				</p>
+    				<small v-if="item.description">
+    				{{ item.description }}
+    				</small>
+    				
+    				
+				</div>
+				
+				<span v-if="forecastRes.main">
+					<hr>
+    				<small>
+						<div  v-if="forecastRes.main.humidity">
+							Humidity: {{ forecastRes.main.humidity }}
+    					</div>
+    					<div  v-if="forecastRes.main.pressure">
+    						Pressure: {{ forecastRes.main.pressure }}
+    					</div>
+					</small>
+				</span>
+				
+				<small>
+				
+    				<div  v-if="forecastRes.wind.speed">
+    					Wind spped: {{ forecastRes.wind.speed }}
+    				</div>
+    				<div  v-if="forecastRes.clouds.all">
+        				Clouds: {{ forecastRes.clouds.all }}
+        			</div>
+				
+				</small>
+				
+					<!-- 
+				<img :src="'http://openweathermap.org/img/wn/' + forecastRes.weather[0].icon + '@2x.png'">
+					{{ forecastRes.weather && forecastRes.weather.length >0 ? forecastRes.weather[0].main : '' }}
+				 -->
+											
+			</div>
+		</div>
+	
+	</div>
+	
+	
+</div>
+
+
+
+			</div>
+
+{% endverbatim %}
+
+<script type="text/javascript">
+</script>
+
+
+
+            </div>
+
+        </div>
+    </div>
+    
+<div class="mt-5"> </div>    
+<div class="mt-5"> </div> 
+   
+
+<script src="{{ asset('assets/js/vue.js') }}" ></script>
+<script src="{{ asset('assets/js/axios.min.js') }}" ></script>
+<script src="{{ asset('assets/js/vueMain.js?c=4') }}" ></script>
+<script src="{{ asset('assets/js/chartjs/Chart.bundle.js') }}" ></script>
+
+{% endblock %}
