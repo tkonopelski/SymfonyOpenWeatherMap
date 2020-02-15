@@ -2,6 +2,9 @@ pre.sf-dump {
     z-index: 100 !important;
 }
 
+#mainMain {
+	margin-top: 80px;
+}
 
 #mainMap {
     width: 100%;

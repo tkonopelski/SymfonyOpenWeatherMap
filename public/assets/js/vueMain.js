@@ -25,24 +25,46 @@ jQuery(document).ready(function () {
 	 weatherWueApp = new Vue({
 		 
 	    data() {
-	    	
 	      return {
 	        forecastResult: [],
+	        weekList: [], // delete?
 	        clientInfo: {},
-	        cityInfo: {}, // city
+	        cityInfo: {}, // city full info
 	        citySearch: 'Katowice, pl',
 	        citySearchHistory: [],
 	        errorMsg: false,
 	        appSpinner: true,
-	        isLocal: false
+	        isLocal: false,
+	        chartTime: [],
+	        chartTemperature: [],
+	        chartTemperFeels: [],
+	        chartHumidity: [],
+	        hourSlider: 18,
+	        hourSlider2: 12
 	      };
+	    },
+	    computed: {
+	        weekByHour: function () {
+	        	
+	        	hourArr = [];
+	        	this.forecastResult.forEach((res) => {
+	        		let formattedNumber = ("0" + this.hourSlider2).slice(-2);
+	        		if (res.dt_txt.substring(11) == formattedNumber + ':00:00') {
+	        			hourArr.push(res);
+		        	}
+	        	 });
+	        	return hourArr;	        	       	
+	        }
 	    },
 	    created() {
 	        console.log('created called.');
 	        this.setIsLocal();
 	        this.getClientInfo();
-	        this.loadCitySearchHistory();	        
+	        this.loadCitySearchHistory();
+	        this.initSlider();
+
 	      },
+	      
 	    watch: {
 	    	  citySearch: function (val) {
 	    		  console.log('watch  citySearch ', val);
@@ -52,9 +74,31 @@ jQuery(document).ready(function () {
 	    			  this.errorMsg = 'Wrong city name';
 	    			  return false;
 	    		  }
-	    	   }
+	    	   },
 	    },	    	  
 	    methods: {
+	    	initSlider() {
+		    	  self = this;
+		    	  setTimeout(function(){ 
+		    		  
+				        $("#rangesliderHours2").bootstrapSlider({
+				        	value: self.hourSlider2,
+				        	tooltip_position:'bottom',
+				    		tooltip: 'always',
+				    		formatter: function(value) {
+				    			return 'Hour: ' + value + ':00';
+				    		},
+
+				    	}).on('slideStop', function(ev){
+				    		//console.log('slideStop', ev.value, ev);
+				    		self.hourSlider2 = ev.value;
+				    	  });
+		    		  
+		    	  }, 1000);
+		    	  
+
+			        
+		      },
 	    	setIsLocal() {
 	    		if (window.location.href.indexOf('weatherapp.lan')> 5) {
 	    			this.isLocal = true;
@@ -67,7 +111,7 @@ jQuery(document).ready(function () {
 	        	hourArr = [];
 	        	 data.forEach((res) => {
 	        		  if (res.dt_txt.substring(11) == hour + ':00:00') {
-	        			  res.icon = res.weather[0].icon;
+	        			  //res.icon = res.weather[0].icon; // old
 		        		  hourArr.push(res);
 		        	  }
 	        	 });
@@ -93,7 +137,6 @@ jQuery(document).ready(function () {
 	    	updateCitySearchHistory: function() {
 	    		
 	    		// $.parseJSON(Cookies.get('info'))
-	    		//console.log('updateCitySearchHistory citySearchHistory ', this.citySearchHistory);
 	    		let exist = false;
 	    		this.citySearchHistory.forEach((res) => {
 	    			if (res.id == this.cityInfo[0].id) {
@@ -120,18 +163,33 @@ jQuery(document).ready(function () {
 		        	  //console.log(response.data);
 		        	  if (response.data.cod == "200") {
 		        		  
-			        	  let hourArr = [];
-			        	  let hour = 12;		        	  
-			        	  hourArr = vm.filterByHour(response.data.list, hour);	        	  		        	  
-			        	  vm.forecastResult = hourArr; 	  		        	 
+			        	  //let hourArr = [];
+		        		  //let hour = 12;		        	  
+			        	  let hour = vm.hourSlider;
+			        	  vm.forecastResult = response.data.list;
+			        	  
+			        	  //vm.weekList = vm.filterByHour(response.data.list, hour);	        	  		        	  
+			        	  //vm.forecastResult = hourArr; // old 	  		        	 
+			        	  //vm.weekList = hourArr; 	  		        	 
 			        	  vm.appSpinner = false;
 			        	  // city
 			        	  let ar = [];
 			        	  ar.push(response.data.city);
 			        	  vm.cityInfo = ar; 
 			        	  
+			        	  
+			        	  response.data.list.forEach((res) => {
+			        		  date = new Date(res.dt_txt);
+			        		  vm.chartTemperature.push({x: date, y: res.main.temp});
+			        		  vm.chartTemperFeels.push({x: date, y: res.main.feels_like});
+			        		  vm.chartHumidity.push({x: date, y: res.main.humidity});
+			        		  vm.chartTime.push(res.dt_txt);
+				    	 });
+			        	  
 			        	  //vm.citySearchHistory.push(response.data.city);
 			        	  vm.updateCitySearchHistory();
+			        	  
+			        	  vm.updateChartTemp();
 		        		  
 		        	  } else if (response.data.cod == "404") {
 						vm.errorMsg = 'Error: ' + response.data.message;
@@ -185,6 +243,102 @@ jQuery(document).ready(function () {
 			        		str += ', ' + this.clientInfo.ipinfo.country; 
 			        	}
 			        	return str;
+			    		
+			    	},
+			    	updateChartTemp() {
+			    		let timeFormat = 'YYYY-MM-DD';
+			    		let config = {
+			        	        type:    'line',
+			        	        labels: this.chartTime,
+			        	        //maintainAspectRatio: true,
+			        	        data:    {
+			        	            datasets: [
+			        	            	{
+			        	            		label: "Temprature",
+			        	            		data: this.chartTemperature,
+			        	            		fill: true,
+			        	            		borderColor: 'blue',
+			        	                    fillColor : "rgba(220,280,220,0.5)",
+			        	                    strokeColor : "rgba(220,220,220,1)",
+			        	                    borderWidth: 1,
+			        	                    //backgroundColor: "#f87979",
+			        	                    backgroundColor: "rgba(75,192,192,0.4)",
+			        	            	},
+			        	            	{
+			        	            		label: "Feels like",
+			        	            		data: this.chartTemperFeels,
+			        	            		fill: false,
+			        	            		borderColor: 'DARKBLUE',
+			        	            		borderWidth: 0.4,
+			        	            		hidden: true,
+			        	            	},
+			        	              	{
+			        	            		label: "Humidity",
+			        	            		data: this.chartHumidity,
+			        	            		//fill: false,
+			        	            		borderColor: 'yelloy',
+			        	            		borderWidth: 0.2,
+			        	            		yAxisID: 'H',
+			        	            	},			        	            	
+			        	            ]
+			        	        },
+			        	        options: {
+			        	            responsive: true, 
+			            	        maintainAspectRatio: false,
+			        	            title:      {
+			        	                display: true,
+			        	                text:    "Temprature & Humidity"
+			        	            },
+			        	            scales:  {
+			        	            	   xAxes: [{
+			        	                       type:       "time",
+			        	                       time:       {
+			        	                       parser: timeFormat,
+			        	                       tooltipFormat: 'YYYY-MM-DD HH:mm',
+			        	                           displayFormats: {
+			        	                               millisecond: 'HH:mm:ss.SSS',
+			        	                               second: 'HH:mm:ss',
+			        	                               minute: 'DD HH:mm',
+			        	                               hour: 'DD HH',
+			                                           day: 'MMM DD',
+			                                           week: 'MM DD',
+			                                           month: 'MMM DD',
+			                                           quarter: 'MMM YYYY',
+			        	                           }
+			        	                       },
+			        	                       scaleLabel: {
+			        	                           display:     true,
+			        	                           labelString: 'Date'
+			        	                       },
+			        	               }],
+			        	                yAxes: [
+			        	                	{
+			        	                    scaleLabel: {
+			        	                        display:     true,
+			        	                        labelString: 'Temperature'
+			        	                    }
+			        	                	},
+			        	                 	{
+			            	                    scaleLabel: {
+			            	                        display:     true,
+			            	                        labelString: 'Humidity'
+			            	                    },
+				        	                    id: 'H',
+				        	                    type: 'linear',
+				        	                    position: 'right',
+			            	                }
+			        	                ]
+			        	            }
+			        	        }
+			        	    }; // config
+			    		let ctx = $('#chartMain');
+		        	    //ctx.height = 500;
+		            	
+
+		            	
+		            	chart = new Chart(ctx, config);
+			    		
+			    		
 			    		
 			    	},
 	      }, // methods

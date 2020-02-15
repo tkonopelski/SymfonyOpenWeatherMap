@@ -6,31 +6,22 @@
 
         <title>{% block title %}Welcome!{% endblock %}</title>
 
-        <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" >
-        <link rel="stylesheet" href="{{ asset('assets/css/main.css?c=1') }}" >
+        <link rel="stylesheet" href="{{ asset('assets/bootstrap-4.4.1-dist/css/bootstrap.min.css') }}" >
+        <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?cache={{ "now"|date("mdhms") }}" >
 
         <link rel="stylesheet" href="{{ asset('assets/css/gmap.css') }}" >
 
         <script src="{{ asset('assets/js/jquery-3.3.1.js') }}" ></script>
+        <script src="{{ asset('assets/js/popper.min.js') }}" ></script>
 
         <style>
-
-            #mainMain {
-                margin-top: 80px;
-            }
-
-
         </style>
 
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
     
-    
-    
      {% include 'navbar/navbar_02.html' %}
-    
-    
 
     <main role="main" id="mainMain">
 
@@ -45,12 +36,9 @@
         {% block body %}{% endblock %}
 
     </main>
-
-
     
     
-    <script src="{{ asset('assets/js/popper.min.js') }}" ></script>
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}" ></script>
+    <script src="{{ asset('assets/bootstrap-4.4.1-dist/js/bootstrap.min.js') }}" ></script>
     <script src="{{ asset('assets/js/js.cookie.min.js') }}" ></script>
     <script src="{{ asset('assets/js/moment-with-locales.js') }}" ></script>
     
@@ -60,9 +48,4 @@
 
         {% block javascripts %}{% endblock %}
     </body>
-
-
-
-
-
 </html>
