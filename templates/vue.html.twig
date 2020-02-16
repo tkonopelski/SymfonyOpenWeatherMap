@@ -59,16 +59,17 @@
 </span>
 
 
-<div class="dropdown show float-right1">
+
+
+<div class="dropdown show float-right mt-4">
   <a class="btn btn-info dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     History
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" v-if="citySearchHistory.length > 0" >
-    <a class="dropdown-item" href="#" v-for="searchHis in citySearchHistory" v-on:click="searchCity(searchHis.name)">{{ searchHis.name }}</a>
+    <a class="dropdown-item" v-for="searchHis in citySearchHistory" v-on:click="searchCity(searchHis.name)">{{ searchHis.name }}</a>
   </div>
 </div>
-
-
+<div class="clearfix1" style="clear: both;"></div>
 
 <div class="card mb-4" style="">
   
@@ -77,24 +78,29 @@
         <div class="row" v-for="cityIno in cityInfo">
         
             <div class="col-md-3">
-    
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Sunrise
+            
+            Sunrise
                 <span class="badge badge-warning badge-pill">{{ cityIno.sunrise|formatDateHM }}</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                Sunset
+                &nbsp;
                 <span class="badge badge-dark badge-pill">{{ cityIno.sunset|formatDateHM }}</span>
-              </li>              
-            </ul>
-
+            Sunset
+            <br>
+                  Population
+                    <span class="badge badge-primary badge-pill">{{ cityIno.population }}</span>
+            <br>
+                 Coordinates
+                    <span class="badge badge-light badge-pill">
+                    {{ cityIno.coord.lat }}/{{ cityIno.coord.lon }}
+                    </span>
             </div>
             
-            <div class="col-md-6">
+            <div class="col-md-5">
            		 <h1 class="text-center">{{ cityIno.name }}, {{ cityIno.country }}</h1>
            		 
-           		 <div class="text-center mt-4" id="bootstrapSliderHours">
+            </div>
+            
+            <div class="col-md-4">
+            		 <div class="text-center mt-4111" id="bootstrapSliderHours">
                     0:00 &nbsp; <input
                     	id="rangesliderHours2"
                     	data-slider-id='ex1Slider'
@@ -105,34 +111,13 @@
                         >  &nbsp; 21:00
                         <input id="rangesliderHoursModel" v-model="hourSlider2" type="hidden" >
                 </div>
-           	
-            </div>
-            
-            <div class="col-md-3">
-            
-                 <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Population
-                    <span class="badge badge-primary badge-pill">{{ cityIno.population }}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Coordinates
-                    <span class="badge badge-light badge-pill">
-                    {{ cityIno.coord.lat }}/{{ cityIno.coord.lon }}
-                    </span>
-                  </li>
-                </ul>
+                    
             </div>
         
         </div><!-- end loop --> 
   </div>
 </div>
 
-
-
-
-
-<hr>
 
 
 <div id="buildWeekInfoVue2">
@@ -144,15 +129,16 @@
 				<h4 class="my-0 font-weight-normal">
 				    {{ forecastRes.dt_txt|formatDateDayName }} 
 				</h4>
-				{{ forecastRes.dt_txt }} 
+				<small>
+					{{ forecastRes.dt_txt }} 
+				</small>
 			</div>
 			<div class="card-body">
-				<h1 class="card-title pricing-card-title">
+				<h2 class="card-title pricing-card-title">
 					{{ forecastRes.main.temp }}<small class="text-muted"><span class="symbol">°</span>C
 					</small>
-				</h1>
-				
-
+				</h2>
+			
 				
 				<div v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
 					<img :src="'http://openweathermap.org/img/wn/' + item.icon + '@2x.png'">
@@ -160,9 +146,9 @@
 				
 					
 				<div class="font-weight-bold" v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
-    				<p>
+    				
     				{{ item.main }}
-    				</p>
+    				<br>
     				<small v-if="item.description">
     				{{ item.description }}
     				</small>
@@ -173,25 +159,25 @@
 				<span v-if="forecastRes.main">
 					<hr>
     				<small>
-						<div  v-if="forecastRes.main.humidity">
+						<span  v-if="forecastRes.main.humidity">
 							Humidity: {{ forecastRes.main.humidity }}
-    					</div>
-    					<div  v-if="forecastRes.main.pressure">
+    					</span>
+    					<span  v-if="forecastRes.clouds.all">
+        					Clouds: {{ forecastRes.clouds.all }}
+        				</span>
+        				<br>
+    					
+    					<span  v-if="forecastRes.main.pressure">
     						Pressure: {{ forecastRes.main.pressure }}
-    					</div>
+    					</span>
+    					<span title="Wind speed" v-if="forecastRes.wind.speed">
+    						Wind: {{ forecastRes.wind.speed }}
+    					</span>
+    					
+    					
+    					
 					</small>
 				</span>
-				
-				<small>
-				
-    				<div  v-if="forecastRes.wind.speed">
-    					Wind spped: {{ forecastRes.wind.speed }}
-    				</div>
-    				<div  v-if="forecastRes.clouds.all">
-        				Clouds: {{ forecastRes.clouds.all }}
-        			</div>
-				
-				</small>
 				
 					<!-- 
 				<img :src="'http://openweathermap.org/img/wn/' + forecastRes.weather[0].icon + '@2x.png'">
@@ -232,9 +218,8 @@
 				
 					
 				<div class="font-weight-bold" v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
-    				<p>
+    				
     				{{ item.main }}
-    				</p>
     				<small v-if="item.description">
     				{{ item.description }}
     				</small>
@@ -286,63 +271,18 @@
 
 <div class="clearfix1" style="clear: both;"></div>
 
-<div style="height: 300px;">
+<div id="chartMainDiv" style="height: 300px;">
         <canvas id="chartMain"></canvas>
 </div>
 
-<div class="card mb-5 d-none1">
-    <div class="card-body" style="height: 300px;">
-        <canvas id="chartMain"></canvas>
-    </div>
-</div>
-
-<div style="height: 230px;" class="d-none">
-	<canvas id="charthumidityMain"></canvas>
-</div>
-
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
-  Tooltip on top
-</button>
-        
-<br>
-<br>
-<br>
 
 
-        
-<input
-	id="rangesliderHours1"
-	class="custom-range"
-    type="range"
-    min="0"                    
-    max="23"                  
-    step="3"                   
-    value="15">
-        
-<input
-	id="rangesliderHours"
-    type="range"
-    min="0"                    
-    max="23"                  
-    step="3">
 
 <script type="text/javascript">
 
 jQuery(document).ready(function () {
 	
-	console.log('sssssssss');
-
 	//$('[data-toggle="tooltip"]').tooltip();
-
-	//return;
-	
-	$("#rangesliderHours1").slider({
-		tooltip: 'always',
-		formatter: function(value) {
-			return 'Hour: ' + value + ':00';
-		}
-	});
-
 
 
 });

@@ -40,7 +40,8 @@ jQuery(document).ready(function () {
 	        chartTemperFeels: [],
 	        chartHumidity: [],
 	        hourSlider: 18,
-	        hourSlider2: 12
+	        hourSlider2: 12,
+	        chartT: 0
 	      };
 	    },
 	    computed: {
@@ -162,9 +163,7 @@ jQuery(document).ready(function () {
 		          .then(function (response) {
 		        	  //console.log(response.data);
 		        	  if (response.data.cod == "200") {
-		        		  
-			        	  //let hourArr = [];
-		        		  //let hour = 12;		        	  
+		        		  		        	  
 			        	  let hour = vm.hourSlider;
 			        	  vm.forecastResult = response.data.list;
 			        	  
@@ -177,6 +176,10 @@ jQuery(document).ready(function () {
 			        	  ar.push(response.data.city);
 			        	  vm.cityInfo = ar; 
 			        	  
+			        	  vm.chartTemperature = [];
+			        	  vm.chartTemperFeels = [];
+			        	  vm.chartHumidity = [];
+			        	  vm.chartTime = [];
 			        	  
 			        	  response.data.list.forEach((res) => {
 			        		  date = new Date(res.dt_txt);
@@ -261,7 +264,6 @@ jQuery(document).ready(function () {
 			        	                    fillColor : "rgba(220,280,220,0.5)",
 			        	                    strokeColor : "rgba(220,220,220,1)",
 			        	                    borderWidth: 1,
-			        	                    //backgroundColor: "#f87979",
 			        	                    backgroundColor: "rgba(75,192,192,0.4)",
 			        	            	},
 			        	            	{
@@ -331,15 +333,25 @@ jQuery(document).ready(function () {
 			        	            }
 			        	        }
 			        	    }; // config
-			    		let ctx = $('#chartMain');
-		        	    //ctx.height = 500;
-		            	
+			    		
 
-		            	
-		            	chart = new Chart(ctx, config);
+			    		let ctx = $('#chartMain');
 			    		
+			    		if (this.chartT != 0) {		    			
+			    			this.chartT.data.datasets = config.data.datasets;
+			    			this.chartT.update();
 			    		
+			    		} else {
+			    			this.chartT  = new Chart(ctx, config);			    			
+			    		}
 			    		
+			    	},
+			    	removeChartData() {
+			    		this.chartT.data.labels.pop();
+			    		this.chartT.data.datasets.forEach((dataset) => {
+			    	        dataset.data.pop();
+			    	    });
+			    		this.chartT.update();
 			    	},
 	      }, // methods
 	      mounted:function(){
