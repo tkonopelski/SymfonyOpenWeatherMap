@@ -17,6 +17,65 @@ pre.sf-dump {
 }
 
 #navbarTop {
-	
+	/* 
 	background-color: #666 !important;
+	*/
+}
+
+.navbar-brand-top {
+	border: 1px solid #eee;
+	padding: 4px 10px;
+}
+
+#buildWeekInfoVue2 .weekTemp {
+	/* 	
+	border: 1px solid red;
+	*/	
+}
+
+@include media-breakpoint-only(sm) {
+    column-count: 5;
+}
+
+@media (max-width: 992px) { 
+ 
+	#buildWeekInfoVue2 > div > div > div.card-header > h4 { 
+  		font-size: 1.0em;
+ 	}
+ 	#buildWeekInfoVue2 .weekTemp {
+		font-size: 1.6em;
+	}
+}
+
+@media (max-width: 768px) {  
+  
+	#buildWeekInfoVue2 > div > div > div.card-header > h4 {
+		/* 		
+		background-color: lime;
+		*/
+		font-size: 0.9em;
+	}
+ 
+	#buildWeekInfoVue2 .weekTemp {
+		font-size: 1.1em;
+	}
+	#buildWeekInfoVue2 .weekTempDscr1 {
+		font-size: 0.9em;
+	}
+	#buildWeekInfoVue2 .card-body {
+		padding: 4px;
+	}
+	#buildWeekInfoVue2 .card {
+		margin: 4px;
+	}
+}
+
+@media (max-width: 576px) {  
+	
+	#buildWeekInfoVue2 > div > div > div.card-header > h4 {
+		/* 
+		background-color: red;
+		*/
+  		font-size: 1.6em;
+	}
 }

@@ -249,6 +249,9 @@ jQuery(document).ready(function () {
 			    		
 			    	},
 			    	updateChartTemp() {
+			    		
+			    		//return false;
+			    		
 			    		let timeFormat = 'YYYY-MM-DD';
 			    		let config = {
 			        	        type:    'line',

@@ -5,7 +5,7 @@
 {% block body %}
 
 
-<link rel="stylesheet" href="{{ asset('assets/bootstrap-slider/css/bootstrap-slider.css') }}" >
+<link rel="stylesheet" href="{{ asset('assets/bootstrap-slider/css/bootstrap-slider.css') }}?cache={{ "now"|date("mdhms") }}" >
 
 <style>
 #chartMain {
@@ -29,11 +29,21 @@
     <div class="container-fluid">
 
         <div class="row">
+
+
+            <div class="col-md-6 offset-md-4">
+
+
+            <form class="form-inline my-2 my-lg-0 d-none1">
+                <input id="navbarSearchInput" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="clientLocationSearch">
+                <button id="navbarSearchButton" class="btn btn-outline-success my-2 my-sm-0 d-none" type="submit">Search</button>
+                
+                <button id="navbarSearchButton3" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="weatherWueApp.searchCity(jQuery('#navbarSearchInput').val());">Search</button>
+            </form>
+
+			</div>
+		
             <div class="col-md-12">
-
-
-
-
 
 {% verbatim %}
 
@@ -51,7 +61,7 @@
   <div >{{ errorMsg }}</div>
 </div>
 
-<div v-if="citySearch" id="wwaCitySearch">{{ citySearch }}</div>
+
 
 
 <span v-if="isLocal==true">
@@ -122,32 +132,37 @@
 
 <div id="buildWeekInfoVue2">
 			
-	<div class="card-deck mb-3 text-center" >
+	<div class="card-deck mb-3 text-center card-columns" >
 	
 		<div class="card mb-4 shadow-sm" v-for="forecastRes in weekByHour">
 			<div class="card-header">
 				<h4 class="my-0 font-weight-normal">
 				    {{ forecastRes.dt_txt|formatDateDayName }} 
 				</h4>
-				<small>
-					{{ forecastRes.dt_txt }} 
+				
+				<small class="hidden-sm11 d-none d-md-block d-sm-block11">
+					{{ forecastRes.dt_txt }}
 				</small>
+				
+				
 			</div>
 			<div class="card-body">
-				<h2 class="card-title pricing-card-title">
+				<h2 class="card-title pricing-card-title weekTemp">
 					{{ forecastRes.main.temp }}<small class="text-muted"><span class="symbol">°</span>C
 					</small>
 				</h2>
 			
 				
 				<div v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
-					<img :src="'http://openweathermap.org/img/wn/' + item.icon + '@2x.png'">
+					<img :src="'http://openweathermap.org/img/wn/' + item.icon + '@2x.png'" class="img-fluid">
 				</div>
 				
 					
 				<div class="font-weight-bold" v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
     				
-    				{{ item.main }}
+    				<span class="weekTempDscr1">
+	    				{{ item.main }}
+    				</span>
     				<br>
     				<small v-if="item.description">
     				{{ item.description }}
@@ -156,7 +171,7 @@
     				
 				</div>
 				
-				<span v-if="forecastRes.main">
+				<span v-if="forecastRes.main" class="d-none d-md-block">
 					<hr>
     				<small>
 						<span  v-if="forecastRes.main.humidity">
@@ -193,6 +208,11 @@
 </div>
 
 
+
+	<!-- 
+		
+			
+
 <div id="buildWeekInfoVue">
 			
 	<div class="card-deck mb-3 text-center" >
@@ -205,15 +225,17 @@
 				{{ forecastRes.dt_txt }} 
 			</div>
 			<div class="card-body">
-				<h1 class="card-title pricing-card-title">
+				<h1 class="card-title pricing-card-title ">
+				
 					{{ forecastRes.main.temp }}<small class="text-muted"><span class="symbol">°</span>C
 					</small>
+					
 				</h1>
 				
 
 				
 				<div v-if="forecastRes.weather.length>0" v-for="item in forecastRes.weather">
-					<img :src="'http://openweathermap.org/img/wn/' + item.icon + '@2x.png'">
+					<img :src="'http://openweathermap.org/img/wn/' + item.icon + '@2x.png'" class="img-fluid">
 				</div>
 				
 					
@@ -249,31 +271,31 @@
         			</div>
 				
 				</small>
-				
-					<!-- 
-				<img :src="'http://openweathermap.org/img/wn/' + forecastRes.weather[0].icon + '@2x.png'">
-					{{ forecastRes.weather && forecastRes.weather.length >0 ? forecastRes.weather[0].main : '' }}
-				 -->
-											
 			</div>
 		</div>
 	
 	</div>
-	
-	
 </div>
 
+	 -->
 
 
-			</div>
 
-{% endverbatim %}
 
 <div class="clearfix1" style="clear: both;"></div>
 
 <div id="chartMainDiv" style="height: 300px;">
         <canvas id="chartMain"></canvas>
 </div>
+
+<div v-if="citySearch" id="wwaCitySearch">{{ citySearch }}</div>
+
+			</div>
+			
+
+
+{% endverbatim %}
+
 
 
 
